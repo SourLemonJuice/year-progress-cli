@@ -11,8 +11,8 @@ Binary file will be named `main.out`.
 ## Preview
 
 ```text
-This year has lost 149 days. That's already 0.407104%
-====================||||||||||||||||||||||||||||
+This year has lost 151/366 days. That's already 0.412568%
+[====================||||||||||||||||||||||||||]
 ```
 
 ## Known Issues

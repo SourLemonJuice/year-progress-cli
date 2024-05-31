@@ -11,26 +11,28 @@ int main(void)
     struct tm tm = *localtime(&time_type);
 
     // Is the leap year?
-    uint16_t max_days;
+    uint16_t days_of_year;
     if((tm.tm_year + 1900) % 4 == 0)
-        max_days = 366; // leap
+        days_of_year = 366; // leap
     else
-        max_days = 365; // normal
+        days_of_year = 365; // normal
 
     // Get percent
-    float year_percent = (float)tm.tm_yday / max_days;
-    printf("This year has lost %d days. That's already %f%\n", tm.tm_yday, year_percent);
+    float year_percent = (float)tm.tm_yday / days_of_year;
+    printf("This year has lost %d/%d days. That's already %f%\n", tm.tm_yday, days_of_year, year_percent);
 
     // Print something
+    printf("[");
     uint8_t max_width = 48;
-    for (int i = 0; i < max_width; i++)
+    // max_width need minus two "[]" char
+    for (int i = 0; i < max_width - 2; i++)
     {
         if(i <= max_width * year_percent)
             printf("=");
         else
             printf("|");
     }
-    printf("\n");
+    printf("]\n");
     
 
     return 0;
