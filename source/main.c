@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     /* handle cli flags */
     if(argc > 1)
     {
-        for(int i = 1; i <= argc; i++)
+        for(int i = 1; i < argc; i++)
         {
             /* parsing flags */
             // --version
@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
             /* parsing arguments here? */
             /* Default */
             puts("Invalid flags/arguments");
-            assert(false);
             goto APP_ERROR_GET_OPTIONS;
         }
     }
@@ -64,11 +63,10 @@ int main(int argc, char *argv[])
 
     // Print something
     printf("[");
-    uint8_t max_width = 48;
     // max_width need minus two "[]" char
-    for (int i = 0; i < max_width - 2; i++)
+    for (int i = 0; i < config_struct.max_progress_bar_width - 2; i++)
     {
-        if(i <= max_width * year_percent)
+        if(i <= config_struct.max_progress_bar_width * year_percent)
             printf("=");
         else
             printf("|");
