@@ -13,8 +13,15 @@
             "label": "Test-1",
             "type": "shell",
             "dependsOn": "Build(make)",
-            "command": "source/main.out",
+            "command": "source/main.out ${input:CLI-flags}",
             "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "CLI-flags",
+            "type": "promptString",
+            "description": "CLI flags/agruments"
         }
     ]
 }
