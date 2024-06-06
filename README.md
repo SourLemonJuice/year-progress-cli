@@ -15,9 +15,17 @@ This year has lost 151/366 days. That's already 0.412568%
 [====================||||||||||||||||||||||||||]
 ```
 
-## Known Issues
+## CLI Flags
 
-- Display width was not dynamic, but set to 48. Maybe will to use arg to fix this.(or get the terminal width in the program and make a persent)
+Check out the `--help`. It's looked like:
+
+```text
+help? you need help me.
+--version | --max_width <uint without zero>
+```
+
+## Todo List
+
 - Looking so normal, it need more colour and great character!!
 
 ## License
