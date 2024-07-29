@@ -11,8 +11,8 @@ Binary file will be named `main.out`.
 ## Preview
 
 ```text
-This year has lost 151/366 days. That's already 0.412568%
-[====================||||||||||||||||||||||||||]
+This year has lost 211/366 days. That's already 57.650%
+[----------------------------##################]
 ```
 
 ## CLI Flags
@@ -20,8 +20,8 @@ This year has lost 151/366 days. That's already 0.412568%
 Check out the `--help`. It's looked like:
 
 ```text
-help? you need help me.
---version | --max_width <uint without zero>
+Usage: year-progress [--help] [--version] [--max-width <uint>]
+The --max-width doesn't allow a value less than 3
 ```
 
 ## Todo List

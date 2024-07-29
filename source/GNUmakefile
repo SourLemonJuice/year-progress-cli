@@ -1,7 +1,12 @@
+clang_flag += -std=c17
+clang_flag += -Wall
+clang_flag += -Os
+
 sources_file=$(wildcard *.c)
-output_excutable_name=main.out
 
-ALL: main.out
+default: year-progress
 
-main.out: main.c
-	gcc $(sources_file) --output $(output_excutable_name)
+year-progress: main.c GNUmakefile
+	gcc ${sources_file} \
+		--output year-progress \
+		${clang_flag}
