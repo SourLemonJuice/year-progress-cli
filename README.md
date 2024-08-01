@@ -3,6 +3,8 @@
 Display how many days did you lost in this year.\
 It seems good to put this in `.bashrc`? Maybe
 
+If you like Python or con't build it, check out [year-progress-cli.py](https://github.com/SourLemonJuice/year-progress-cli.py)
+
 ## Build
 
 Goto `source/` folder and run `make`.\
