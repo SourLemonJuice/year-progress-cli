@@ -1,4 +1,5 @@
 #include "main.h"
+#include <stdint.h>
 
 // init config structure
 static int InitConfigStruct_(struct config_struct *config)
@@ -58,10 +59,11 @@ int main(int argc, char *argv[])
     else
         days_of_year = 365; // normal
 
+    uint8_t been_days = tm.tm_yday + 1; // the C standard...
     // Get percent of year
-    float year_ratio = (float)tm.tm_yday / days_of_year;
+    float year_ratio = (float)been_days / (float)days_of_year;
     float year_percent = year_ratio * 100;
-    printf("This year has lost %d/%d days. That's already %.3f%%\n", tm.tm_yday, days_of_year, year_percent);
+    printf("This year has lost %d/%d days. That's already %.3f%%\n", been_days, days_of_year, year_percent);
 
     // Print something
     printf("[");
