@@ -13,7 +13,7 @@
 
 /* Defines */
 #ifndef APP_VERSION_STRING
-    #define APP_VERSION_STRING "develop"
+    #define APP_VERSION_STRING "[Error: Version string undefined]"
 #endif
 
 /* Structures */

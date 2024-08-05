@@ -2,6 +2,8 @@ clang_flag += -std=c17
 clang_flag += -Wall
 clang_flag += -Os
 
+clang_flag += -DAPP_VERSION_STRING="\"Build 1\""
+
 sources_file=$(wildcard *.c)
 
 default: year-progress
