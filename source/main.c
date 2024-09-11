@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     else
         days_of_year = 365; // normal
 
-    uint8_t been_days = tm.tm_yday + 1; // the C standard...
+    uint16_t been_days = tm.tm_yday + 1; // the C standard...
     // Get percent of year
     float year_ratio = (float)been_days / (float)days_of_year;
     float year_percent = year_ratio * 100;
