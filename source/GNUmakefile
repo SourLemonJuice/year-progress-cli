@@ -3,6 +3,7 @@ clang_flag += -Wall
 clang_flag += -O3
 
 clang_flag += -DAPP_VERSION_STRING="\"Build 1\""
+clang_flag += -DAPP_VERSION_DESCRIBE="\"$(shell git describe --long --dirty)\""
 
 sources_file=$(wildcard *.c)
 

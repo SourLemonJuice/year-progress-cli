@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
         /* parsing flags */
         // --version
         if (not strcmp(argv[i], "--version")) {
-            printf("Version: %s\n", APP_VERSION_STRING);
+            printf("Version:\t%s\n", APP_VERSION_STRING);
+            printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
             goto APP_ERROR_OK;
         }
         // --help
