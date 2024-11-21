@@ -15,3 +15,8 @@ year-progress: main.c GNUmakefile
 	gcc ${sources_file} \
 		--output year-progress \
 		${clang_flag}
+
+year-progress.js: main.c GNUmakefile
+	/usr/lib/emscripten/emcc ${sources_file} \
+		-o year-progress.js \
+		${clang_flag}
