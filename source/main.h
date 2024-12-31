@@ -1,8 +1,6 @@
 // hum...
 #pragma once
 
-#include <stdint.h>
-
 /* Defines */
 #ifndef APP_VERSION_STRING
     #define APP_VERSION_STRING "[error]"
@@ -14,7 +12,7 @@
 
 /* Structures */
 struct config_struct {
-    uint32_t max_progress_bar_width;
+    long max_progress_bar_width;
 };
 
 /* Error Type */

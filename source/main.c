@@ -26,25 +26,24 @@ int main(int argc, char *argv[])
     for (int i = 1; i < argc; i++) {
         /* parsing flags */
         // --version
-        if (not strcmp(argv[i], "--version")) {
+        if (strcmp(argv[i], "--version") == 0) {
             printf("Version:\t%s\n", APP_VERSION_STRING);
             printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
             goto APP_ERROR_OK;
         }
         // --help
-        if (not strcmp(argv[i], "--help")) {
+        if (strcmp(argv[i], "--help") == 0) {
             printf("Usage: year-progress [--help] [--version] [--max-width <uint>]\n");
             printf("The --max-width doesn't allow a value less than 3\n");
             goto APP_ERROR_OK;
         }
         // --max_width
-        if (not strcmp(argv[i], "--max-width")) {
+        if (strcmp(argv[i], "--max-width") == 0) {
             i++; // shift argc
             // get arg, with error check
-            int width_get = atoi(argv[i]); // TODO change to a safe function please
-            if (width_get <= 2)            // TODO is this useful?
-            {
-                puts("--max-width <num> variable invalid");
+            long width_get = strtol(argv[i], NULL, 10);
+            if (width_get < 3) {
+                puts("--max-width <num> parameter invalid");
                 goto APP_ERROR_GET_OPTIONS;
             }
             config.max_progress_bar_width = width_get;
@@ -61,28 +60,28 @@ int main(int argc, char *argv[])
     time_t time_type = time(NULL);
     struct tm tm = *localtime(&time_type);
     // Is the leap year?
-    uint16_t days_of_year;
+    int days_of_year;
     if ((tm.tm_year + 1900) % 4 == 0)
         days_of_year = 366; // leap
     else
         days_of_year = 365; // normal
 
-    uint16_t been_days = tm.tm_yday + 1; // the C standard...
-    // Get percent of year
-    float year_ratio = (float)been_days / (float)days_of_year;
-    float year_percent = year_ratio * 100;
+    int today = tm.tm_yday + 1; // the C standard...
+    // Get lost days percent of the year
+    float lost_ratio = (float)(today - 1) / (float)days_of_year;
+    float lost_percent = lost_ratio * 100;
 
-    if (days_of_year == been_days) {
-        printf("It's the last day(%d of %d), hope you'll be batter in the New Year. awa\n", been_days, days_of_year);
+    if (days_of_year == today) {
+        printf("It's the last day(%d of %d), hope you'll be batter in the New Year. awa\n", today, days_of_year);
     } else {
-        printf("This year has lost %d/%d days. That's already %.3f%%\n", been_days - 1, days_of_year, year_percent);
+        printf("This year has lost %d/%d days. That's already %.3f%%\n", today - 1, days_of_year, lost_percent);
     }
 
     // Print something
     printf("[");
     // max_width need minus two "[]" char
     for (int i = 0; i < config.max_progress_bar_width - 2; i++) {
-        if (i <= config.max_progress_bar_width * year_ratio)
+        if (i <= config.max_progress_bar_width * lost_ratio)
             printf("-");
         else
             printf("#");
