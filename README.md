@@ -8,7 +8,7 @@ If you like Python or con't build it, check out [year-progress-cli.py](https://g
 ## Build
 
 Goto `source/` folder and run `make`.\
-Binary file will be named `main.out`.
+Binary file will be named `year-progress`.
 
 ## Preview
 
@@ -19,16 +19,14 @@ This year has lost 211/366 days. That's already 57.650%
 
 ## CLI Flags
 
-Check out the `--help`. It's looked like:
+Check out the `year-progress --help`.\
+The `--version` will display build info.
 
-```text
-Usage: year-progress [--help] [--version] [--max-width <uint>]
-The --max-width doesn't allow a value less than 3
-```
+Use `--width` to set the progress bar width.
 
 ## Todo List
 
-- Looking so normal, it need more colour and great character!!
+- Looking so normal, it need more colors!!
 
 ## License
 

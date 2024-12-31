@@ -29,22 +29,27 @@ int main(int argc, char *argv[])
         if (strcmp(argv[i], "--version") == 0) {
             printf("Version:\t%s\n", APP_VERSION_STRING);
             printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
-            goto APP_ERROR_OK;
+            exit(APP_ERROR_OK);
         }
         // --help
         if (strcmp(argv[i], "--help") == 0) {
-            printf("Usage: year-progress [--help] [--version] [--max-width <uint>]\n");
+            printf("Usage: year-progress [--help] [--version] [--width <num>]\n");
             printf("The --max-width doesn't allow a value less than 3\n");
-            goto APP_ERROR_OK;
+            exit(APP_ERROR_OK);
         }
-        // --max_width
-        if (strcmp(argv[i], "--max-width") == 0) {
+        // --width or old --max-width
+        if (strcmp(argv[i], "--width") == 0 or strcmp(argv[i], "--max-width") == 0) {
             i++; // shift argc
+            if (i == argc) {
+                puts("--width need a parameter");
+                exit(APP_ERROR_GET_OPTIONS);
+            }
+
             // get arg, with error check
-            long width_get = strtol(argv[i], NULL, 10);
+            unsigned long width_get = strtoul(argv[i], NULL, 10);
             if (width_get < 3) {
-                puts("--max-width <num> parameter invalid");
-                goto APP_ERROR_GET_OPTIONS;
+                puts("--width <num> parameter invalid");
+                exit(APP_ERROR_GET_OPTIONS);
             }
             config.max_progress_bar_width = width_get;
             continue;
@@ -52,7 +57,7 @@ int main(int argc, char *argv[])
         /* parsing arguments here? */
         /* Default */
         puts("Invalid flags/arguments");
-        goto APP_ERROR_GET_OPTIONS;
+        exit(APP_ERROR_GET_OPTIONS);
     }
 
     /* start init */
@@ -88,10 +93,5 @@ int main(int argc, char *argv[])
     }
     printf("]\n");
 
-/* all return */
-APP_ERROR_OK:
     return APP_ERROR_OK;
-APP_ERROR_GET_OPTIONS:
-    puts("Error: Break when Getting Configuration");
-    return APP_ERROR_GET_OPTIONS;
 }
