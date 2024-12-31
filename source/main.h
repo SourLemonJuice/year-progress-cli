@@ -12,7 +12,7 @@
 
 /* Structures */
 struct config_struct {
-    long max_progress_bar_width;
+    unsigned long max_progress_bar_width;
 };
 
 /* Error Type */
