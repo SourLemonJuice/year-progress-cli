@@ -14,7 +14,7 @@
 
 /* Structures */
 struct config_struct {
-    uint16_t max_progress_bar_width;
+    uint32_t max_progress_bar_width;
 };
 
 /* Error Type */

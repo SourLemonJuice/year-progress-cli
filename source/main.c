@@ -71,7 +71,12 @@ int main(int argc, char *argv[])
     // Get percent of year
     float year_ratio = (float)been_days / (float)days_of_year;
     float year_percent = year_ratio * 100;
-    printf("This year has lost %d/%d days. That's already %.3f%%\n", been_days, days_of_year, year_percent);
+
+    if (days_of_year == been_days) {
+        printf("It's the last day(%d of %d), hope you'll be batter in the New Year. awa\n", been_days, days_of_year);
+    } else {
+        printf("This year has lost %d/%d days. That's already %.3f%%\n", been_days - 1, days_of_year, year_percent);
+    }
 
     // Print something
     printf("[");

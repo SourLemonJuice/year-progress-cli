@@ -11,12 +11,12 @@ sources_file=$(wildcard *.c)
 
 default: year-progress
 
-year-progress: main.c GNUmakefile
+year-progress: main.c Makefile
 	gcc ${sources_file} \
 		--output year-progress \
 		${clang_flag}
 
-year-progress.js: main.c GNUmakefile
+year-progress.js: main.c Makefile
 	/usr/lib/emscripten/emcc ${sources_file} \
 		-o year-progress.js \
 		${clang_flag}
