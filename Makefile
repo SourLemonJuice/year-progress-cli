@@ -3,7 +3,7 @@ CC = clang
 version = v1.2
 
 CFLAGS += -std=c17
-CFLAGS += -Wall -Wextra -Wvla
+CFLAGS += -Wall -Wextra -Wvla -Wno-unused-parameter
 CFLAGS += -O3
 CFLAGS += -Iexternal/ArgParseX/include/
 
