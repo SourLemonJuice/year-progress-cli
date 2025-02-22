@@ -11,7 +11,7 @@
 
 #include "argpx/argpx.h"
 
-#define YP_NAME "year-progress"
+#define YP_PREFIX "year-progress: "
 
 /* Error Type */
 enum APP_ERROR_ENUM {
@@ -46,6 +46,16 @@ static void CbPrintVersion_()
     printf("Version:\t%s\n", APP_VERSION_STRING);
     printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
     exit(kExitOk);
+}
+
+static void CbWidthCheck_(void *out_in, void *param_in)
+{
+    struct ArgpxOutParamSingle *out = out_in;
+
+    if (*(int *)out->var_ptr < 3) {
+        fprintf(stderr, YP_PREFIX "width less than 3\n");
+        exit(kExitGetOptions);
+    }
 }
 
 /*
@@ -83,20 +93,21 @@ static int ParseArg_(int argc, char *argv[], struct Config *config)
         .name = "width",
         .action_type = kArgpxActionParamSingle,
         .action_load.param_single = {.type = kArgpxVarInt, .var_ptr = &config->progress_width},
+        .callback = CbWidthCheck_,
     });
 
     // clang-format on
 
     struct ArgpxResult result;
     if (ArgpxParse(&result, argc - 1, argv + 1, &style, &flag, NULL) != kArgpxStatusSuccess) {
-        fprintf(stderr, YP_NAME ": parsing arg error[%d]: %s\n", result.status, ArgpxStatusString(result.status));
+        fprintf(stderr, YP_PREFIX "parsing arg error[%d]: %s\n", result.status, ArgpxStatusString(result.status));
         fprintf(stderr, "Error arg: %s\n", result.current_argv_ptr);
         ret = -1;
         goto out;
     }
 
     if (result.param_c > 0) {
-        fprintf(stderr, YP_NAME ": non-flag arguments no needed\n");
+        fprintf(stderr, YP_PREFIX "non-flag arguments no needed\n");
         ret = -1;
         goto out;
     }
@@ -117,7 +128,6 @@ int main(int argc, char *argv[])
     if (ParseArg_(argc, argv, &config) < 0)
         exit(kExitGetOptions);
 
-    /* start init */
     // Get local time
     time_t time_type = time(NULL);
     struct tm tm = *localtime(&time_type);
@@ -129,21 +139,21 @@ int main(int argc, char *argv[])
         days_of_year = 365; // normal
 
     int today = tm.tm_yday + 1; // the C standard...
-    // Get lost days percent of the year
-    float lost_ratio = (float)(today - 1) / (float)days_of_year;
-    float lost_percent = lost_ratio * 100;
+    // Get current days percent of the year
+    float days_ratio = (float)today / (float)days_of_year;
+    float days_percent = days_ratio * 100;
 
     if (days_of_year == today) {
         printf("It's the last day(%d of %d), hope you'll be batter in the New Year. awa\n", today, days_of_year);
     } else {
-        printf("This year has lost %d/%d days. That's already %.3f%%\n", today - 1, days_of_year, lost_percent);
+        printf("It's day %d of the year(%d). That's already %.1f%%\n", today, days_of_year, days_percent);
     }
 
     // Print something
     printf("[");
     // max_width need minus two "[]" char
     for (int i = 0; i < config.progress_width - 2; i++) {
-        if (i <= config.progress_width * lost_ratio)
+        if (i <= config.progress_width * days_ratio)
             printf("-");
         else
             printf("#");
