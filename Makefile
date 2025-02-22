@@ -29,3 +29,8 @@ year-progress: ${sources_file} libargparsex.a
 year-progress.js: ${sources_file}
 	/usr/lib/emscripten/emcc $^ ${CFLAGS} \
 		-o year-progress.js
+
+.PHONY: clean
+clean:
+	-rm year-progress
+	-rm lib*.a

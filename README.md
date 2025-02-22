@@ -7,14 +7,20 @@ If you like Python or con't build it, check out [year-progress-cli.py](https://g
 
 ## Build
 
-Goto `source/` folder and run `make`.\
+At the root of the repository, run:
+
+- `git submodule init`
+- `git submodule update --depth 1`
+- `make`
+
+It will pull my ArgParseX library for argument parsing.
 Binary file will be named `year-progress`.
 
 ## Preview
 
 ```text
-This year has lost 211/366 days. That's already 57.650%
-[----------------------------##################]
+It's day 53 of the year(365). That's already 14.5%
+[-------#######################################]
 ```
 
 ## CLI Flags
