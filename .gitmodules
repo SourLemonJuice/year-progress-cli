@@ -1,0 +1,3 @@
+[submodule "external/ArgParseX"]
+	path = external/ArgParseX
+	url = https://github.com/SourLemonJuice/ArgParseX.git
