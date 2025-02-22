@@ -1,5 +1,6 @@
 #include "main.h"
 
+#include <assert.h>
 #include <iso646.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -8,57 +9,113 @@
 #include <string.h>
 #include <time.h>
 
+#include "argpx/argpx.h"
+
+#define YP_NAME "year-progress"
+
+/* Error Type */
+enum APP_ERROR_ENUM {
+    kExitOk = 0,
+    kExitFailure,
+    kExitGetOptions,
+    kExitDisplay,
+};
+
+/* Structures */
+struct Config {
+    int progress_width;
+};
+
 // init config structure
-static int InitConfigStruct_(struct config_struct *config)
+static int InitConfigStruct_(struct Config *config)
 {
-    config->max_progress_bar_width = 0.6 * 80;
+    config->progress_width = 0.6 * 80;
 
     return 0;
+}
+
+static void CbPrintHelp_()
+{
+    printf("Usage: year-progress [--help] [--version] [--width <num>]\n");
+    printf("The --width doesn't allow a value less than 3\n");
+    exit(kExitOk);
+}
+
+static void CbPrintVersion_()
+{
+    printf("Version:\t%s\n", APP_VERSION_STRING);
+    printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
+    exit(kExitOk);
+}
+
+/*
+    return negative: error
+*/
+static int ParseArg_(int argc, char *argv[], struct Config *config)
+{
+    assert(config != NULL);
+
+    int ret = 0;
+
+    // clang-format off
+
+    struct ArgpxStyle style = ARGPX_STYLE_INIT;
+    ArgpxGroupAppend(&style, ARGPX_GROUP_GNU);  // idx 0
+    ArgpxGroupAppend(&style, ARGPX_GROUP_UNIX); // idx 1
+
+    ArgpxSymbolAppend(&style, ARGPX_SYMBOL_STOP_PARSING("--"));
+
+    struct ArgpxFlagSet flag = ARGPX_FLAGSET_INIT;
+    ArgpxFlagAppend(&flag, &(struct ArgpxFlag){
+        .group_idx = 0,
+        .name = "help",
+        .action_type = kArgpxActionCallbackOnly,
+        .callback = CbPrintHelp_,
+    });
+    ArgpxFlagAppend(&flag, &(struct ArgpxFlag){
+        .group_idx = 0,
+        .name = "version",
+        .action_type = kArgpxActionCallbackOnly,
+        .callback = CbPrintVersion_,
+    });
+    ArgpxFlagAppend(&flag, &(struct ArgpxFlag){
+        .group_idx = 0,
+        .name = "width",
+        .action_type = kArgpxActionParamSingle,
+        .action_load.param_single = {.type = kArgpxVarInt, .var_ptr = &config->progress_width},
+    });
+
+    // clang-format on
+
+    struct ArgpxResult result;
+    if (ArgpxParse(&result, argc - 1, argv + 1, &style, &flag, NULL) != kArgpxStatusSuccess) {
+        fprintf(stderr, YP_NAME ": parsing arg error[%d]: %s\n", result.status, ArgpxStatusString(result.status));
+        fprintf(stderr, "Error arg: %s\n", result.current_argv_ptr);
+        ret = -1;
+        goto out;
+    }
+
+    if (result.param_c > 0) {
+        fprintf(stderr, YP_NAME ": non-flag arguments no needed\n");
+        ret = -1;
+        goto out;
+    }
+
+out:
+    ArgpxStyleFree(&style);
+    ArgpxFlagFree(&flag);
+    ArgpxResultFree(&result);
+    return ret;
 }
 
 int main(int argc, char *argv[])
 {
     /* init config structure */
-    struct config_struct config;
+    struct Config config;
     InitConfigStruct_(&config);
 
-    /* handle cli flags */
-    for (int i = 1; i < argc; i++) {
-        /* parsing flags */
-        // --version
-        if (strcmp(argv[i], "--version") == 0) {
-            printf("Version:\t%s\n", APP_VERSION_STRING);
-            printf("Git describe:\t%s\n", APP_VERSION_DESCRIBE);
-            exit(APP_ERROR_OK);
-        }
-        // --help
-        if (strcmp(argv[i], "--help") == 0) {
-            printf("Usage: year-progress [--help] [--version] [--width <num>]\n");
-            printf("The --max-width doesn't allow a value less than 3\n");
-            exit(APP_ERROR_OK);
-        }
-        // --width or old --max-width
-        if (strcmp(argv[i], "--width") == 0 or strcmp(argv[i], "--max-width") == 0) {
-            i++; // shift argc
-            if (i == argc) {
-                puts("--width need a parameter");
-                exit(APP_ERROR_GET_OPTIONS);
-            }
-
-            // get arg, with error check
-            unsigned long width_get = strtoul(argv[i], NULL, 10);
-            if (width_get < 3) {
-                puts("--width <num> parameter invalid");
-                exit(APP_ERROR_GET_OPTIONS);
-            }
-            config.max_progress_bar_width = width_get;
-            continue;
-        }
-        /* parsing arguments here? */
-        /* Default */
-        puts("Invalid flags/arguments");
-        exit(APP_ERROR_GET_OPTIONS);
-    }
+    if (ParseArg_(argc, argv, &config) < 0)
+        exit(kExitGetOptions);
 
     /* start init */
     // Get local time
@@ -85,13 +142,13 @@ int main(int argc, char *argv[])
     // Print something
     printf("[");
     // max_width need minus two "[]" char
-    for (int i = 0; i < config.max_progress_bar_width - 2; i++) {
-        if (i <= config.max_progress_bar_width * lost_ratio)
+    for (int i = 0; i < config.progress_width - 2; i++) {
+        if (i <= config.progress_width * lost_ratio)
             printf("-");
         else
             printf("#");
     }
     printf("]\n");
 
-    return APP_ERROR_OK;
+    return kExitOk;
 }

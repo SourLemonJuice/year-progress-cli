@@ -5,6 +5,7 @@ version = v1.2
 CFLAGS += -std=c17
 CFLAGS += -Wall -Wextra -Wvla
 CFLAGS += -O3
+CFLAGS += -Iexternal/ArgParseX/include/
 
 CFLAGS += -DAPP_VERSION_STRING="\"${version}\""
 CFLAGS += -DAPP_VERSION_DESCRIBE="\"$(shell git describe --long --dirty)\""
