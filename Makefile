@@ -1,6 +1,6 @@
 CC = clang
 
-version = v1.2
+version = v2.0.1
 
 CFLAGS += -std=c17
 CFLAGS += -Wall -Wextra -Wvla -Wno-unused-parameter

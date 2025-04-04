@@ -30,6 +30,12 @@ The `--version` will display build info.
 
 Use `--width` to set the progress bar width.
 
+## Version semantic
+
+```text
+<major>.<minor>.[<patch>]
+```
+
 ## Todo List
 
 - Looking so normal, it need more colors!!
