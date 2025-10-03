@@ -1,0 +1,9 @@
+-s dir
+--name year-progress
+--license mit
+--architecture x86_64
+--description "Display how many days did you lost in this year"
+--url "https://github.com/SourLemonJuice/year-progress-cli"
+--maintainer "酸柠檬猹/SourLemonJuice <SourLemonJuice233@outlook.com>"
+
+year-progress=/usr/bin/year-progress
