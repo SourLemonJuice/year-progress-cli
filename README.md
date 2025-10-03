@@ -42,4 +42,5 @@ Use `--width` to set the progress bar width.
 
 ## License
 
-The Unlicense. It's just a simple toy. Have fun.
+This software published under MIT license.\
+Copyright 2025 酸柠檬猹/SourLemonJuice
