@@ -43,6 +43,7 @@
 *.pdb
 
 # Project stuff
+/.vscode
 year-progress*
 /lib*
 
